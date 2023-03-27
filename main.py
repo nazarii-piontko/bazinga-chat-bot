@@ -92,17 +92,20 @@ def generate_response(context_messages):
 
 
 def is_bot_mentioned(message: Message, bot: BT):
-    if not message.entities:
-        return False
+    if message.reply_to_message is not None and \
+       message.reply_to_message.from_user.is_bot and \
+       message.reply_to_message.from_user.id == bot.id:
+        return True
 
-    for entity in message.entities:
-        if entity.type == "mention":
-            mention_text = message.text[entity.offset:entity.offset + entity.length]
-            if mention_text == bot.name:
-                return True
-        elif entity.type == "text_mention":
-            if entity.user.id == bot.id:
-                return True
+    if message.entities is not None:
+        for entity in message.entities:
+            if entity.type == "mention":
+                mention_text = message.text[entity.offset:entity.offset + entity.length]
+                if mention_text == bot.name:
+                    return True
+            elif entity.type == "text_mention":
+                if entity.user.id == bot.id:
+                    return True
 
     return False
 
