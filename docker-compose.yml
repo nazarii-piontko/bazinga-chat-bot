@@ -5,7 +5,7 @@ services:
     build: .
     environment:
       DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
-      TELEGRAM_GROUP_ID: "${TELEGRAM_GROUP_ID}"
+      GROUP_ID: "${GROUP_ID}"
       BOT_TOKEN: "${BOT_TOKEN}"
       CHAT_GPT_API_KEY: "${CHAT_GPT_API_KEY}"
     command: './wait-for-it.sh db:5432 -- python main.py'
