@@ -122,7 +122,10 @@ async def handle_message(update: Update, context: CallbackContext):
         if is_bot_mentioned(message, context.bot):
             last_messages = get_context_messages()
             response = generate_response(last_messages)
-            await message.reply_text(response)
+
+            reply_message = await message.reply_text(response)
+
+            save_message_to_db(reply_message.message_id, reply_message.date or reply_message.edit_date, reply_message.from_user.full_name, reply_message.text)
     except Exception as e:
         logging.error('Handle Telegram message error: %s', e, exc_info=e)
 
