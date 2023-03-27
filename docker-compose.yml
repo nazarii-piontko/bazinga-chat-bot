@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    environment:
+      DATABASE_URL: "${DATABASE_URL}"
+      TELEGRAM_GROUP_ID: "${TELEGRAM_GROUP_ID}"
+      BOT_TOKEN: "${BOT_TOKEN}"
+      CHAT_GPT_API_KEY: "${CHAT_GPT_API_KEY}"
+    command: './wait-for-it.sh db:5432 -- python main.py'
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  db-data:
