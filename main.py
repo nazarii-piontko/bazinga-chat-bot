@@ -74,11 +74,11 @@ def get_context_messages():
 
 def generate_response(context_messages):
     messages = [
-        {"role": "system", "content": "Ти бот жартівник у чат кімнаті із групою друзів. Не починай свої повідомлення з 'Повідомлення від ...'"}
+        {"role": "system", "content": "You are a joker bot in a chat room with a group of friends. Do not start your messages with 'Message from ...'"}
     ]
 
     for m in context_messages[:-1]:
-        messages.append({"role": "assistant", "content": f"Повідомлення від {m[1]} ({m[0]}). {m[2]}"})
+        messages.append({"role": "assistant", "content": f"Message from {m[1]} ({m[0]}). {m[2]}"})
 
     last_message = context_messages[-1]
     messages.append({"role": "user", "content": f"{last_message[2]}"})
